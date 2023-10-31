@@ -1,6 +1,11 @@
 package com.oscar.pictures.controllers;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.oscar.pictures.entity.GenRes;
@@ -20,10 +26,16 @@ import com.oscar.pictures.service.MovieService;
 
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.core.ParameterizedTypeReference;
 
 
 @Controller
 public class HomeController {
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 	@Autowired 
 	private MovieService movieService;
 	@Autowired
@@ -39,25 +51,51 @@ public class HomeController {
 	@Autowired
 	private LoadBalancerClient loadbal;
 	
-	@RequestMapping(value="/",method = RequestMethod.GET)
+	@RequestMapping(value="/movie",method = RequestMethod.GET)
 	public ModelAndView Dashboard()
 	{
 		List<Movie>movies= movieService.getAllMovies();
-		System.out.println("Movies are "+movies);
-		ModelAndView mav=new ModelAndView("home");	
+		ModelAndView mav=new ModelAndView("home2");	
 		mav.addObject("movies",movies);
 		return mav;
 	}
 	
-	@RequestMapping(value="/genres",method = RequestMethod.GET)
+	@RequestMapping(value="/",method = RequestMethod.GET)
 	public ModelAndView GenResDashboard()
 	{
-		List<GenRes>genres= genResService.getAllGenres()
+		List<GenRes>genres= genResService.getAllGenres();
 		System.out.println("Genres are "+genres);
-		ModelAndView mav=new ModelAndView("home");	
+		ModelAndView mav=new ModelAndView("home3");	
 		mav.addObject("genres",genres);
 		return mav;
 	}
+	
+	@RequestMapping(value="/moviebygenres/{id}",method = RequestMethod.GET)
+	public ModelAndView movieGenRes1(@PathVariable String id) {
+		System.out.println("Id is "+id);
+		String uri="http://localhost:2088";
+		String FinalUri=uri+"/moviebygenre/"+id;
+		Movie[] movie = restTemplate.getForObject(
+				FinalUri, Movie[].class);
+		ModelAndView mav=new ModelAndView("home");	
+		mav.addObject("movies",movie);
+		return mav;
+	}
+	
+	
+	@RequestMapping(value="/moviebbygenre/{id}",method = RequestMethod.GET)
+	public ModelAndView movieGenRes(@PathVariable String id) {
+		System.out.println("Id is "+id);
+		String uri="http://localhost:2088";
+		String FinalUri=uri+"/moviebygenre/"+id;
+		Movie[] movie = restTemplate.getForObject(
+				FinalUri, Movie[].class);
+		ModelAndView mav=new ModelAndView("home");	
+		mav.addObject("movies",movie);
+		return mav;
+	}
+	
+	
 	/*
 	 * @RequestMapping(value="/delete/{id}",method=RequestMethod.GET) public String
 	 * deleteProduct(@PathVariable int id) {
