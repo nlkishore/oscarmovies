@@ -24,6 +24,7 @@ import com.oscar.pictures.entity.Movie;
 import com.oscar.pictures.service.GenresService;
 import com.oscar.pictures.service.MovieService;
 
+
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.ParameterizedTypeReference;
@@ -45,6 +46,39 @@ public class HomeController {
 	private DiscoveryClient dclient;
 	@Autowired
 	private LoadBalancerClient loadbal;
+	
+	
+	@RequestMapping(value="/addgenre",method = RequestMethod.GET)
+	public String addGenere()
+	{
+		return "AddGenre";
+	} 
+	
+	@PostMapping("/commitaddgenre")
+    public String addGenereCommit(GenRes prod)
+    {
+		genResService.addGenres(prod);
+		/*String uri="http://localhost:2082";
+		String FinalUri=uri+"/genres-app/api";
+		Genre[] genre = restTemplate.getForObject(FinalUri, Genre[].class);
+		ModelAndView mav=new ModelAndView("home");	
+		mav.addObject("genre",genre);*/
+	//	return mav;
+		return "redirect:/genre";
+    }
+	
+	@RequestMapping(value="/addmovie",method = RequestMethod.GET)
+	public String addMovie()
+	{
+		return "AddMovie";
+	} 
+	
+	@PostMapping("/commitaddmovie")
+    public String addMovieCommit(Movie movie)
+    {
+		movieService.addMovie(movie);
+		return "redirect:/movie";
+    }
 	
 	@RequestMapping(value="/movie",method = RequestMethod.GET)
 	public ModelAndView getAllMovies()

@@ -3,6 +3,7 @@ package com.oscar.pictures.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.oscar.pictures.entity.Movie;
@@ -14,13 +15,13 @@ public class MovieServiceImpl implements MovieService {
 	@Autowired
     private MovieRepository movieRepository;
 	@Override
-	public Movie addMovie(Movie prod) {
+	public Movie addMovie(Movie movie) {
 		// TODO Auto-generated method stub
-		return null;
+		return movieRepository.save(movie);
 	}
 
 	@Override
-	public Movie updateMovie(Movie prod, int Id) {
+	public Movie updateMovie(Movie prod, String Id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -39,8 +40,8 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public List<Movie> getAllMovies() {
-		return (List<Movie>)
-	            movieRepository.findAll();
+		return (List<Movie>)movieRepository.findAll();
+		
 	}
 
 }

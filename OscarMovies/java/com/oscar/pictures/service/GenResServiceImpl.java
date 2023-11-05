@@ -18,11 +18,11 @@ public class GenResServiceImpl implements GenresService{
 	@Override
 	public GenRes addGenres(GenRes prod) {
 		// TODO Auto-generated method stub
-		return null;
+		return genresRepository.save(prod);
 	}
 
 	@Override
-	public GenRes updateGenres(GenRes prod, int Id) {
+	public GenRes updateGenres(GenRes prod, String Id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

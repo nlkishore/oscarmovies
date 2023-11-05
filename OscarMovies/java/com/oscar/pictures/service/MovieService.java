@@ -6,9 +6,9 @@ import com.oscar.pictures.entity.Movie;
 
 public interface MovieService {
 	
-	public Movie addMovie(Movie prod);
-	public Movie updateMovie(Movie prod,int Id);
-	public void deleteMovie(Movie prod);
+	public Movie addMovie(Movie movie);
+	public Movie updateMovie(Movie movie,String Id);
+	public void deleteMovie(Movie movie);
 	public Movie getMovieById(String id);
 	public List<Movie> getAllMovies();
 
