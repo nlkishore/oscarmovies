@@ -13,10 +13,12 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     	<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+    	<script src="js/custom.js"></script>
     </head>
     <body>
     <div class="container">
     	<h1>Genres List</h1>
+    	 <div align="right"><input type="submit" value="Add Genre" class="btn btn-success" onclick="addGenres()"/></div>
 		 <table id="details" class="table table-responsive table-bordered table-hover mt-2">
         		<thead>
         			<tr>

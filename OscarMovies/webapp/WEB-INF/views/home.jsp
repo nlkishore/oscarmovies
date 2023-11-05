@@ -14,6 +14,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     	<script type="text/javascript" th:src="@{/js/custom.js}"></script>
+    	
 
     </head>
     <body>
@@ -21,6 +22,7 @@
         <div class="mr-2 mt-2">
         	<label ><small><strong>Movie List:</strong></small></label>
 		</div>
+		<div align="right"><input type="submit" value="Add Movie" class="btn btn-success" onclick="addMovie()"/></div>
         	<table class="table table-responsive table-bordered table-hover mt-2">
         		<thead>
         			<tr>
