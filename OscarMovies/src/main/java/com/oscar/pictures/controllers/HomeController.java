@@ -24,6 +24,7 @@ import com.oscar.pictures.entity.Movie;
 import com.oscar.pictures.service.GenresService;
 import com.oscar.pictures.service.MovieService;
 
+
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.ParameterizedTypeReference;
@@ -40,23 +41,60 @@ public class HomeController {
 	private MovieService movieService;
 	@Autowired
 	private GenresService genResService;
-
-	/*
-	 * @RequestMapping(value="/") public ModelAndView test(HttpServletResponse
-	 * response) throws IOException{ return new ModelAndView("home"); }
-	 */
 	
 	@Autowired
 	private DiscoveryClient dclient;
 	@Autowired
 	private LoadBalancerClient loadbal;
 	
+	
+	@RequestMapping(value="/addgenre",method = RequestMethod.GET)
+	public String addGenere()
+	{
+		return "AddGenre";
+	} 
+	
+	@PostMapping("/commitaddgenre")
+    public String addGenereCommit(GenRes prod)
+    {
+		genResService.addGenres(prod);
+		/*String uri="http://localhost:2082";
+		String FinalUri=uri+"/genres-app/api";
+		Genre[] genre = restTemplate.getForObject(FinalUri, Genre[].class);
+		ModelAndView mav=new ModelAndView("home");	
+		mav.addObject("genre",genre);*/
+	//	return mav;
+		return "redirect:/genre";
+    }
+	
+	@RequestMapping(value="/addmovie",method = RequestMethod.GET)
+	public String addMovie()
+	{
+		return "AddMovie";
+	} 
+	
+	@PostMapping("/commitaddmovie")
+    public String addMovieCommit(Movie movie)
+    {
+		movieService.addMovie(movie);
+		return "redirect:/movie";
+    }
+	
 	@RequestMapping(value="/movie",method = RequestMethod.GET)
-	public ModelAndView Dashboard()
+	public ModelAndView getAllMovies()
 	{
 		List<Movie>movies= movieService.getAllMovies();
-		ModelAndView mav=new ModelAndView("home2");	
+		ModelAndView mav=new ModelAndView("home");	
 		mav.addObject("movies",movies);
+		return mav;
+	}
+	
+	@RequestMapping(value="/genre",method = RequestMethod.GET)
+	public ModelAndView getAllGenres()
+	{
+		List<GenRes>genres= genResService.getAllGenres();
+		ModelAndView mav=new ModelAndView("home2");	
+		mav.addObject("genres",genres);
 		return mav;
 	}
 	
@@ -64,7 +102,6 @@ public class HomeController {
 	public ModelAndView GenResDashboard()
 	{
 		List<GenRes>genres= genResService.getAllGenres();
-		System.out.println("Genres are "+genres);
 		ModelAndView mav=new ModelAndView("home3");	
 		mav.addObject("genres",genres);
 		return mav;
@@ -72,7 +109,6 @@ public class HomeController {
 	
 	@RequestMapping(value="/moviebygenres/{id}",method = RequestMethod.GET)
 	public ModelAndView movieGenRes1(@PathVariable String id) {
-		System.out.println("Id is "+id);
 		String uri="http://localhost:2088";
 		String FinalUri=uri+"/moviebygenre/"+id;
 		Movie[] movie = restTemplate.getForObject(
@@ -81,21 +117,7 @@ public class HomeController {
 		mav.addObject("movies",movie);
 		return mav;
 	}
-	
-	
-	@RequestMapping(value="/moviebbygenre/{id}",method = RequestMethod.GET)
-	public ModelAndView movieGenRes(@PathVariable String id) {
-		System.out.println("Id is "+id);
-		String uri="http://localhost:2088";
-		String FinalUri=uri+"/moviebygenre/"+id;
-		Movie[] movie = restTemplate.getForObject(
-				FinalUri, Movie[].class);
-		ModelAndView mav=new ModelAndView("home");	
-		mav.addObject("movies",movie);
-		return mav;
-	}
-	
-	
+
 	/*
 	 * @RequestMapping(value="/delete/{id}",method=RequestMethod.GET) public String
 	 * deleteProduct(@PathVariable int id) {
